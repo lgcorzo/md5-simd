@@ -9,6 +9,9 @@ on:
     - master
     - main
   workflow_dispatch:
+permissions:
+  contents: read
+
 jobs:
   vulncheck:
     name: Analysis
