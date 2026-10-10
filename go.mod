@@ -1,5 +1,9 @@
 module github.com/minio/md5-simd
 
-go 1.14
+go 1.22
 
-require github.com/klauspost/cpuid/v2 v2.0.6
+toolchain go1.24.3
+
+require github.com/klauspost/cpuid/v2 v2.2.10
+
+require golang.org/x/sys v0.30.0 // indirect
