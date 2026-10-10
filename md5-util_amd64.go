@@ -48,7 +48,9 @@ func generateMaskAndRounds8(input [8][]byte, mr *[8]maskRounds) (rounds int) {
 			}
 			round = uint64(s.len) >> 6
 		}
-		m = m & ^(1 << uint(s.pos))
+		if s.pos < 8 {
+			m = m & ^(1 << uint(s.pos))
+		}
 	}
 	return
 }
@@ -79,7 +81,9 @@ func generateMaskAndRounds16(input [16][]byte, mr *[16]maskRounds) (rounds int) 
 			}
 			round = uint64(s.len) >> 6
 		}
-		m = m & ^(1 << uint(s.pos))
+		if s.pos < 16 {
+			m = m & ^(1 << uint(s.pos))
+		}
 	}
 	return
 }
