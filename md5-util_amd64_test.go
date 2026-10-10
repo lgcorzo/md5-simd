@@ -57,3 +57,36 @@ func TestGenerateMaskAndRounds(t *testing.T) {
 		}
 	}
 }
+
+type maskTest16 struct {
+	in  [16]int
+	out []maskRounds
+}
+
+var goldenMask16 = []maskTest16{
+	{[16]int{}, []maskRounds{}},
+	{[16]int{64, 0, 64, 0, 64, 0, 64, 0, 64, 0, 64, 0, 64, 0, 64, 0}, []maskRounds{{0x5555, 1}}},
+	{[16]int{64, 64, 64, 64, 64, 64, 64, 64, 128, 128, 128, 128, 128, 128, 128, 128}, []maskRounds{{0xffff, 1}, {0xff00, 1}}},
+}
+
+func TestGenerateMaskAndRounds16(t *testing.T) {
+	input := [16][]byte{}
+	maskRound := [16]maskRounds{}
+	for gcase, g := range goldenMask16 {
+		for i, l := range g.in {
+			buf := make([]byte, l)
+			input[i] = buf[:]
+		}
+
+		rounds := generateMaskAndRounds16(input, &maskRound)
+
+		mr := make([]maskRounds, 0, 16)
+		for r := 0; r < rounds; r++ {
+			mr = append(mr, maskRound[r])
+		}
+
+		if !reflect.DeepEqual(mr, g.out) {
+			t.Fatalf("case %d: got %04x\n                    want %04x", gcase, mr, g.out)
+		}
+	}
+}
